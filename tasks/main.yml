@@ -1,0 +1,19 @@
+---
+
+- name: Install mariadb
+  include_tasks: install.yml
+
+- name: Install mariadb
+  include_tasks: install.yml
+
+- name: Test for .my.cnf
+  stat:
+    path: /root/.my.cnf
+  register: my_cnf
+
+- name: Create users
+  include_tasks: users.yml
+  when: not my_cnf.stat.exists
+
+- name: Create databases
+  include_tasks: databases.yml

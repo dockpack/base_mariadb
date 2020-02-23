@@ -1,0 +1,12 @@
+---
+
+- name: restart mariadb
+  service:
+    name: "{{ mariadb_service }}"
+    state: restarted
+
+
+- name: start mariadb
+  service:
+    name: "{{ mariadb_service }}"
+    state: started

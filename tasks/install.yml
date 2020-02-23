@@ -1,0 +1,68 @@
+---
+
+- name: Install Centos software collections
+  package:
+    name: centos-release-scl-rh
+    state: present
+  register: network_access
+  until: network_access is success
+  retries: 3
+  delay: 4
+  when: collections_enabled|bool and ansible_distribution == 'CentOS'
+  tags:
+    - mariadb
+
+- name: Enable RHEL software collections
+  # yamllint disable-line rule:line-length
+  command: "yum-config-manager --enable rhel-server-rhscl-{{ ansible_distribution_major_version }}-rpms"
+  when: collections_enabled|bool and ansible_distribution == 'RedHat'
+  tags:
+    - mariadb
+
+- name: Install MariaDB from Software Collections
+  when: collections_enabled|bool and ansible_os_family == 'RedHat'
+  yum:
+    name: "{{ mariadb_packages }}"
+    state: present
+    update_cache: true
+  register: installed
+  until: installed is success
+  retries: 10
+  delay: 2
+  tags:
+    - mariadb
+
+- name: Create mariadb-server.cnf template
+  template:
+    src: mariadb-server.cnf
+    dest: "{{ mariadb_conf_dir}}/mariadb-server.cnf"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart mariadb
+
+- name: Create configuration files
+  template:
+    src: "{{ item }}"
+    dest: "{{ mariadb_conf_dir }}/{{ item }}"
+    owner: root
+    group: root
+    mode: "0644"
+  with_items:
+    - mysql-clients.cnf
+  notify: restart mariadb
+
+- name: Ensure mariadb is running
+  service:
+    name: "{{ mariadb_service }}"
+    enabled: true
+    state: started
+
+- name: Add RHEL python library
+  when: ansible_distribution_major_version is version('8', '<')
+  yum:
+    name:
+      - MySQL-python
+    state: present
+
+...

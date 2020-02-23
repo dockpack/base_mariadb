@@ -1,0 +1,37 @@
+---
+
+- name: Generate random password
+  shell: openssl passwd -in /dev/urandom | head -1
+  register: mysqlrootpass
+  when: >
+    installed.changed
+    or not my_cnf.stat.exists
+  tags:
+    - skip_ansible_lint
+
+- name: Create rootuser
+  mysql_user:
+    name: root
+    host: "{{ item }}"
+    password: "{{ mysqlrootpass.stdout }}"
+    priv: "*.*:ALL,GRANT"
+  with_items:
+    - "{{ ansible_hostname|lower }}"
+    - 127.0.0.1
+    - '::1'
+    - localhost
+  when: mysqlrootpass.changed
+
+- name: Save root password for mariadb
+  copy:
+    content: |
+      [client]
+      user=root
+      password={{ mysqlrootpass.stdout }}
+    dest: /root/.my.cnf
+    owner: root
+    group: root
+    mode: "0600"
+  when: mysqlrootpass.changed
+  tags:
+    - skip_ansible_lint
