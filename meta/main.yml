@@ -1,0 +1,22 @@
+---
+# Standards: 0.1
+galaxy_info:
+  author: Bas Meijer
+  description: MariaDB from SCL on RedHat
+  company: dockpack
+
+  license: MIT
+
+  min_ansible_version: 2.2.1
+
+  platforms:
+    - name: EL
+      versions:
+        - 7
+        - 6
+  galaxy_tags:
+    - system
+    - database
+    - centos
+
+dependencies: []
