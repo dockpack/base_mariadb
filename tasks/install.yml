@@ -32,6 +32,19 @@
   tags:
     - mariadb
 
+- name: Install mysqltuner from EPEL
+  when: ansible_os_family == 'RedHat'
+  yum:
+    name: mysqltuner
+    state: present
+  register: downloaded
+  until: downloaded is success
+  retries: 3
+  delay: 5
+  ignore_errors: true
+  tags:
+    - mariadb
+
 - name: Create mariadb-server.cnf template
   template:
     src: mariadb-server.cnf

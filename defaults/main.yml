@@ -5,7 +5,6 @@ mariadb_packages:
   - openssl
   - "{{ mariadb_package }}"
   - "{{ mariadb_package }}-mariadb-backup"
-  - mysqltuner
 mariadb_service: "{{ mariadb_package }}-mariadb"
 mariadb_conf_dir: "/etc/opt/rh/{{ mariadb_package }}/my.cnf.d"
 mariadb_overrides_dir: "/etc/systemd/system/{{ mariadb_service }}.service.d"
