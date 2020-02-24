@@ -1,7 +1,5 @@
 ---
 
-
-
 - name: Install mariadb
   include_tasks: install.yml
 

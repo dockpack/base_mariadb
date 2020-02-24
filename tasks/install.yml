@@ -80,13 +80,13 @@
     group: mysql
     mode: 0755
 
-#- name: mount a tempfs on mariadb_tmpdir for query caching
-#  mount:
-#    name: "{{ mariadb_tmpdir }}"
-#    src: tmpfs
-#    fstype: tmpfs
-#    opts: "size={{ mariadb_tmpfs_size }}"
-#    state: present
+#  - name: mount a tempfs on mariadb_tmpdir for query caching
+#    mount:
+#      name: "{{ mariadb_tmpdir }}"
+#      src: tmpfs
+#      fstype: tmpfs
+#      opts: "size={{ mariadb_tmpfs_size }}"
+#      state: present
 
 - name: Ensure mariadb is running
   service:
