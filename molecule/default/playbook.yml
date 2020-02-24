@@ -1,5 +1,6 @@
 ---
 - hosts: all
   roles:
+  - role: dockpack.base_epel
   - role: base_mariadb
     collections_enabled: true

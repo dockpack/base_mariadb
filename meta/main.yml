@@ -19,4 +19,5 @@ galaxy_info:
     - database
     - centos
 
-dependencies: []
+dependencies:
+  - dockpack.base_epel
