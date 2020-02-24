@@ -34,13 +34,12 @@ innodb_buffer_pool_size        = {{ mariadb_innodb_buffer_pool_size|default((ans
 innodb_thread_concurrency      = {{ mariadb_innodb_thread_concurrency|default(ansible_processor_vcpus/2)|int }}
 table_open_cache               = {{ mariadb_table_open_cache|default(2000) }}
 max_connections                = {{ mariadb_max_connections|default((ansible_memtotal_mb/128)|round|int) }}
-query_cache_size               = {{ mariadb_query_cache_size|default((ansible_memtotal_mb/32)|round|int) }}M
 back_log                       = 250 # The lower of 900 and (50 + max_connections/5)
 #
 max_allowed_packet             = 1073741824
 tmp_table_size                 = 512M
 max_heap_table_size            = 512M
-
+performance_schema             = ON
 net_read_timeout               = 30
 net_write_timeout              = 30
 table_definition_cache         = 400
@@ -50,15 +49,16 @@ thread_stack                   = 296960  # per session
 #
 # * Query Cache Configuration
 #
-query_cache_limit              = 2M  # don't cache results which are larger than this
+query_cache_limit              = 4M  # don't cache results which are larger than this
 # total size of query cache
 
 sort_buffer_size               = 2097152 # If the status variable sort_merge_passes is too high, you may need to look at improving your query indexes, or increasing this.
 read_buffer_size               = 131072  # per session
 read_rnd_buffer_size           = 2621    # per session
-query_cache_type               = 1
+query_cache_type               = 0 # Query cache may be disabled by default due to mutex contention.
+query_cache_size               = 0 # Query cache may be disabled by default due to mutex contention.
 join_buffer_size               = 8M  # per session
-key_buffer_size                = 64K  # If you don't make use of MyISAM tables at all, you can set this to a very low value, such as 64K.
+key_buffer_size                = 128K  # If you don't make use of MyISAM tables at all, you can set this to a very low value, such as 64K.
 myisam_recover_options         = BACKUP_ALL
 
 # InnoDB settings
@@ -70,7 +70,7 @@ innodb_commit_concurrency      = 0   # the number of transaction threads that ca
 innodb_flush_log_at_trx_commit = 1
 innodb_flush_method            = fsync # changing from the default has caused problems in some situations
 innodb_log_buffer_size         = 16777216
-innodb_log_file_size           = 50331648
+innodb_log_file_size           = 256M
 
 {% if mariadb_high_performance %}
 

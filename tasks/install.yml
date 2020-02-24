@@ -70,6 +70,24 @@
     group: root
     mode: 0644
 
+
+- name: Create systemd overrides directory
+  when: ansible_distribution_major_version is version('6', '>')
+  file:
+    path: "{{ mariadb_tmpdir }}"
+    state: directory
+    owner: mysql
+    group: mysql
+    mode: 0755
+
+#- name: mount a tempfs on mariadb_tmpdir for query caching
+#  mount:
+#    name: "{{ mariadb_tmpdir }}"
+#    src: tmpfs
+#    fstype: tmpfs
+#    opts: "size={{ mariadb_tmpfs_size }}"
+#    state: present
+
 - name: Ensure mariadb is running
   service:
     name: "{{ mariadb_service }}"

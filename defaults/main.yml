@@ -5,11 +5,13 @@ mariadb_packages:
   - openssl
   - "{{ mariadb_package }}"
   - "{{ mariadb_package }}-mariadb-backup"
+  - mysqltuner
 mariadb_service: "{{ mariadb_package }}-mariadb"
 mariadb_conf_dir: "/etc/opt/rh/{{ mariadb_package }}/my.cnf.d"
 mariadb_overrides_dir: "/etc/systemd/system/{{ mariadb_service }}.service.d"
 mariadb_datadir: "/var/opt/rh/{{ mariadb_package }}/lib/mysql"
-mariadb_tmpdir: '/var//tmp'
+mariadb_tmpdir: '/var/tmp'
+mariadb_tmpfs_size: '2028m'
 mariadb_logdir: "/var/opt/rh/{{ mariadb_package }}/log/mariadb"
 mariadb_pidfile: "/run/{{ mariadb_service }}/mariadb.pid"
 
