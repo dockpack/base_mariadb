@@ -52,6 +52,24 @@
     - mysql-clients.cnf
   notify: restart mariadb
 
+- name: Create systemd overrides directory
+  when: ansible_distribution_major_version is version('6', '>')
+  file:
+    path: "{{ mariadb_overrides_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Manage systemd limits
+  when: ansible_distribution_major_version is version('6', '>')
+  template:
+    src: limits.conf
+    dest: "{{ mariadb_overrides_dir }}"
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Ensure mariadb is running
   service:
     name: "{{ mariadb_service }}"
