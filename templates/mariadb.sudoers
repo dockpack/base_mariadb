@@ -1,0 +1,5 @@
+## Services
+Cmnd_Alias MARIADB = /usr/bin/systemctl status -l {{ mariadb_service }}, /usr/bin/systemctl start {{ mariadb_service }}, /usr/bin/systemctl stop {{ mariadb_service }}, /usr/bin/systemctl restart {{ mariadb_service }}, /usr/bin/journalctl -u {{ mariadb_service }}, /usr/bin/less {{ mariadb_logdir }}/mariadb.log
+
+%staff ALL=(ALL) NOPASSWD: MARIADB
+
