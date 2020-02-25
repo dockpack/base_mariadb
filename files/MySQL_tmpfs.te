@@ -1,0 +1,16 @@
+module MySQL_tmpfs 1.0;
+
+require {
+	type tmpfs_t;
+	type user_tmp_t;
+	type mysqld_t;
+	class dir { write search read remove_name open getattr add_name };
+	class file { write getattr read lock create unlink open };
+}
+
+#============= mysqld_t ==============
+allow mysqld_t tmpfs_t:dir { write search read remove_name open getattr add_name };
+allow mysqld_t tmpfs_t:file { write getattr read lock create unlink open };
+allow mysqld_t user_tmp_t:dir { write search read remove_name open getattr add_name };
+allow mysqld_t user_tmp_t:file { write getattr read lock create unlink open };
+# src: http://john.cuppi.net/move-mysql-mariadb-tmpdir-to-tmpfs-ramdisk/#comment-640

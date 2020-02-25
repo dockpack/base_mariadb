@@ -1,0 +1,37 @@
+---
+
+- name: Manage directory for MySQL
+  when: ansible_distribution_major_version is version('6', '>')
+  file:
+    path: "{{ mariadb_tmpdir }}"
+    state: directory
+    owner: mysql
+    group: mysql
+    mode: 0755
+
+- name: mount a tempfs on mariadb_tmpdir for query caching
+  mount:
+    name: "{{ mariadb_tmpdir }}"
+    src: tmpfs
+    fstype: tmpfs
+    opts: "size={{ mariadb_tmpfs_size }}"
+    state: present
+
+- name: Copy policy for mysql
+  copy:
+    src: MySQL_tmpfs.te
+    dest: /root
+
+- name: Permit tmpfs_t in mysqld_t
+  script: semanage_tmpfs.sh
+  args:
+    chdir: /root
+    creates: /root/MySQL_tmpfs.mod
+
+- name: mount a tempfs on mariadb_tmpdir for query caching
+  mount:
+    name: "{{ mariadb_tmpdir }}"
+    src: tmpfs
+    fstype: tmpfs
+    opts: "size={{ mariadb_tmpfs_size }}"
+    state: present
