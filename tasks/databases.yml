@@ -2,7 +2,7 @@
 
 - name: Count anonymous users.
   command: mysql -NBe 'SELECT count(User) FROM mysql.user WHERE User = ""'
-  changed_when: no
+  changed_when: false
   register: mysql_anoncount
   tags:
     - secure
@@ -10,13 +10,13 @@
 - name: Remove the anonymous users.
   command: mysql -NBe 'DELETE FROM mysql.user WHERE User = ""'
   when: mysql_anoncount.stdout != '0'
-  ignore_errors: yes
+  ignore_errors: true
   tags:
     - secure
 
 - name: Count passwordless users.
   command: mysql -NBe 'SELECT count(User) FROM mysql.user WHERE Password = ""'
-  changed_when: no
+  changed_when: false
   register: mysql_usercount
   tags:
     - secure
@@ -24,16 +24,16 @@
 - name: Remove the passwordless users.
   command: mysql -NBe 'DELETE FROM mysql.user WHERE Password = ""'
   when: mysql_usercount.stdout != '0'
-  changed_when: yes
-  ignore_errors: yes
+  changed_when: true
+  ignore_errors: true
   tags:
     - secure
 
 - name: Flush privileges.
   command: mysql -NBe 'FLUSH PRIVILEGES'
   when: mysql_usercount.stdout != '0' or mysql_anoncount.stdout != '0'
-  changed_when: no
-  ignore_errors: yes
+  changed_when: false
+  ignore_errors: true
   tags:
     - secure
 
