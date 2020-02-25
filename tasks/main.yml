@@ -1,7 +1,13 @@
 ---
 
-- name: Install mariadb
+- name: Install packages
   include_tasks: install.yml
+
+- name: Install tmpfs
+  include_tasks: tmpfs.yml
+
+- name: Configure mariadb
+  include_tasks: configure.yml
 
 - name: Test for .my.cnf
   stat:

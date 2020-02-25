@@ -1,5 +1,10 @@
 ---
 
+- name: reload deamon
+  systemd:
+    name: "{{ mariadb_service }}"
+    daemon_reload: yes
+
 - name: restart mariadb
   service:
     name: "{{ mariadb_service }}"
