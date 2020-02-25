@@ -32,11 +32,13 @@
   tags:
     - mariadb
 
-- name: Install package for MySQL Python library
+- name: Install packages with Python libraries
   when: ansible_distribution_major_version is version('8', '<')
   yum:
     name:
       - MySQL-python
+      - policycoreutils-python
+      - libsemanage-python
     state: present
   register: installed
   until: installed is success

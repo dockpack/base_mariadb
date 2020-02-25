@@ -18,11 +18,13 @@
     state: present
 
 - name: Copy policy for mysql
+  when: ansible_selinux.mode is defined and ansible_selinux.mode == 'enforcing'
   copy:
     src: MySQL_tmpfs.te
     dest: /root
 
 - name: Permit tmpfs_t in mysqld_t
+  when: ansible_selinux.mode is defined and ansible_selinux.mode == 'enforcing'
   script: semanage_tmpfs.sh
   args:
     chdir: /root
