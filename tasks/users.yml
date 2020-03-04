@@ -21,6 +21,8 @@
     - '::1'
     - localhost
   when: mysqlrootpass.changed
+  tags:
+    - skip_ansible_lint
 
 - name: Save root password for mariadb
   copy:
