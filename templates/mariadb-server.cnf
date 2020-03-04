@@ -15,11 +15,11 @@
 [mysqld]
 character_set_server           = utf8
 datadir                        = {{ mariadb_datadir }}
-tmpdir                         = {{ mariadb_tmpdir}}
-log-error                      = {{ mariadb_logdir}}/mariadb.log
+tmpdir                         = {{ mariadb_tmpdir }}
+log-error                      = {{ mariadb_logdir }}/mariadb.log
 #
 ## let's use slow log too, to be able to analyse problems.
-slow-query-log-file            = {{ mariadb_logdir}}/slow_queries.log
+slow-query-log-file            = {{ mariadb_logdir }}/slow_queries.log
 long_query_time                = 5 # seconds
 
 # Instead of skip-networking the default is now to listen only on

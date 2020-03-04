@@ -15,7 +15,7 @@
 - name: Create mariadb-server.cnf template
   template:
     src: mariadb-server.cnf
-    dest: "{{ mariadb_conf_dir}}/mariadb-server.cnf"
+    dest: "{{ mariadb_conf_dir }}/mariadb-server.cnf"
     owner: root
     group: root
     mode: "0644"
