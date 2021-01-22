@@ -22,6 +22,7 @@
   copy:
     src: MySQL_tmpfs.te
     dest: /root
+    mode: 0600
 
 - name: Permit tmpfs_t in mysqld_t
   when: ansible_selinux.mode is defined and ansible_selinux.mode == 'enforcing'
